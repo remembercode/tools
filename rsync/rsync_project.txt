@@ -1,0 +1,10 @@
+rsync project
+auto install cygwin
+suto add Path
+auto add rsync user
+give right to rsync user
+add modoule to config file
+add rsync windows service
+reboot
+
+create 4 folders: AutoDownload AutoUpload ManualDownload ManualUpload
