@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
-echo --------------------------------------
-echo this bat edited by wangbing 2016.04.17
-echo bat file full path is : %~f0
-echo this bat create one administrator account by username password
-echo --------------------------------------
+REM echo --------------------------------------
+REM echo this bat edited by wangbing 2016.04.17
+REM echo bat file full path is : %~f0
+REM echo this bat create one administrator account by username password
+REM echo --------------------------------------
 set user=%~1
 set pwd=%~2
 set single_quotes='
