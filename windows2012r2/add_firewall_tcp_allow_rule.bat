@@ -28,6 +28,10 @@ if !first! EQU %single_quotes% (
 	)
 )
 echo rule port : !port!
-netsh advfirewall firewall add rule name=!name! !port! dir=in action=allow protocol=TCP localport=!port!
-echo !errorlevel!
+netsh advfirewall firewall add rule name="!name!" dir=in action=allow protocol=TCP localport=!port!
+if "!errorlevel!" NEQ "0" (
+	echo add firewall tcp rule "!name!" failed
+) else (
+	echo add firewall tcp rule "!name!" succeed
+)
 endlocal
