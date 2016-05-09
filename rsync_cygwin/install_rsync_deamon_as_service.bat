@@ -32,6 +32,7 @@ if "!errorlevel!" NEQ "0" (
 	copy rsyncd.conf C:\cygwin\etc\rsyncd.conf
 	net start Rsync
 )
+..\windows2012r2\add_firewall_tcp_allow_rule.bat "Rsync" "873"
 pushd %parent%
 endlocal
 goto :eof
