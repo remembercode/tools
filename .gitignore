@@ -1,3 +1,5 @@
 /local
 /rsync/setup-x86.exe
 /github.desktop.standalone/github.desktop.standalone.7z
+/rsync/setup.log
+/rsync/setup.log.full
