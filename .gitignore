@@ -3,3 +3,7 @@
 /github.desktop.standalone/github.desktop.standalone.7z
 /rsync/setup.log
 /rsync/setup.log.full
+/rsync_cygwin/http%3a%2f%2fcygwin.mirror.constant.com%2f
+/rsync_cygwin/setup.log
+/rsync_cygwin/setup.log.full
+/rsync_cygwin/setup-x86.exe
