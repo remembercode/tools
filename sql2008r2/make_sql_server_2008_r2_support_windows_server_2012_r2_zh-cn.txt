@@ -1,0 +1,16 @@
+主要解决sqlserver 2008 R2不能在windows server 2012 R2上安装，需要集成sp2.
+ 
+1.将安装文件sqlserver 2008 R2解压为f:\sqlserver2008R2
+ 
+2.将sqlserver 2008 R2的SP2文件解压到f:\sqlserver2008R2\sp目录下
+ 
+3.拷贝setup.exe文件
+robocopy f:\sqlserver2008R2\sp f:\sqlserver2008R2 Setup.exe
+ 
+4.拷贝除Microsoft.SQL.Chainer.PackageData.dll之外的所有文件
+robocopy f:\sqlserver2008R2\sp\x64 f:\sqlserver2008R2\x64 /XF Microsoft.SQL.Chainer.PackageData.dll
+ 
+5.新建DefaultSetup.INI,保存到F:\sqlserver2008R2\x64下，内容如下:
+;SQLSERVER2008 R2 Configuration File
+[SQLSERVER2008]
+PCUSOURCE=".\sp"
