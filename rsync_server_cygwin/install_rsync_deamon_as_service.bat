@@ -30,6 +30,11 @@ if "!errorlevel!" NEQ "0" (
 ) else (
 	echo "Rsync" service create succeed
 	copy rsyncd.conf C:\cygwin\etc\rsyncd.conf
+	echo !pwd!>C:\cygwin\rsync_server_secret
+	if not exist D:\rsync_server (
+		mkdir D:\rsync_server
+		echo.>D:\rsync_server\rsync_test.txt
+	)
 	net start Rsync
 )
 ..\windows2012r2\add_firewall_tcp_allow_rule.bat "Rsync" "873"
