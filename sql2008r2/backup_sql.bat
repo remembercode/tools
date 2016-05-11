@@ -51,6 +51,14 @@ for /f "delims=" %%a in ('..\windows\service_exist.bat "!sql_service_name!"') do
 	)
 )
 
+for /f "delims=" %%a in ('..\windows\service_stop.bat "!sql_service_name!"') do (
+	REM echo "%%~a"
+	if "%%~a" NEQ "0" (
+		echo sql service "!sql_service_name!" stop failed
+		goto :eof
+	)
+)
+
 goto :eof
 
 net stop %sql_service_name%
