@@ -2,7 +2,6 @@
 setlocal enabledelayedexpansion
 set parent=%CD%
 pushd %~dp0
-set single_quotes='
 REM set sql_service_name=MSSQLSERVER
 for /f "delims=" %%a in ('..\common\param\format_input.bat "%~1"') do (
 	set sql_service_name=%%~a
@@ -84,8 +83,35 @@ if not exist "%src_path%\%sql_name%_log.ldf" (
 
 if not exist "%dst_path%" mkdir "%dst_path%"
 
-copy "%src_path%\%sql_name%.mdf" "%dst_path%\%sql_name%.mdf" /y
-copy "%src_path%\%sql_name%_log.ldf" "%dst_path%\%sql_name%_log.ldf" /y
+for /f %%a in ('..\windows2012r2\fulltime.bat') do (
+	set fulltime=%%~a
+)
+
+copy "!src_path!\!sql_name!.mdf" "!dst_path!\!sql_name!.!fulltime!.mdf" /y >nul 2>nul
+if "!errorlevel!" EQU "0" (
+	if exist "!dst_path!\!sql_name!.!fulltime!.mdf" (
+		echo "!src_path!\!sql_name!.mdf"  backup to "!dst_path!\!sql_name!.!fulltime!.mdf" succeed
+	) else (
+		echo "!src_path!\!sql_name!.mdf"  backup to "!dst_path!\!sql_name!.!fulltime!.mdf" failed
+		goto :eof
+	)
+) else (
+	echo "!src_path!\!sql_name!.mdf"  backup to "!dst_path!\!sql_name!.!fulltime!.mdf" failed
+	goto :eof
+)
+
+copy "!src_path!\!sql_name!_log.ldf" "!dst_path!\!sql_name!_log.!fulltime!.ldf" /y >nul 2>nul
+if "!errorlevel!" EQU "0" (
+	if exist "!dst_path!\!sql_name!_log.!fulltime!.ldf" (
+		echo "!src_path!\!sql_name!_log.ldf"  backup to "!dst_path!\!sql_name!_log.!fulltime!.ldf" succeed
+	) else (
+		echo "!src_path!\!sql_name!_log.ldf"  backup to "!dst_path!\!sql_name!_log.!fulltime!.ldf" failed
+		goto :eof
+	)
+) else (
+	echo "!src_path!\!sql_name!_log.ldf"  backup to "!dst_path!\!sql_name!_log.!fulltime!.ldf" failed
+	goto :eof
+)
 
 for /f "delims=" %%a in ('..\windows\service_start.bat "!sql_service_name!"') do (
 	if "%%~a" NEQ "0" (
