@@ -4,7 +4,7 @@ REM receive one param, delete all " ' ? :
 setlocal enabledelayedexpansion
 set errorlevel=0
 set input=%1
-for /f %%a in ('call format_input.bat !input!') do (
+for /f %%a in ('call format_input.bat "!input!"') do (
 	set input=%%a
 )
 for %%a in (!input!) do set input=%%~$PATH:a
