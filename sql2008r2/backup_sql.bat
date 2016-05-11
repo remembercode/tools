@@ -61,9 +61,14 @@ for /f "delims=" %%a in ('..\windows\service_stop.bat "!sql_service_name!"') do 
 
 goto :eof
 
-net stop %sql_service_name%
 copy "%src_path%\%sql_name%.mdf" "%dst_path%\%sql_name%.mdf" /y
 copy "%src_path%\%sql_name%_log.ldf" "%dst_path%\%sql_name%_log.ldf" /y
-net start %sql_service_name%
+
+for /f "delims=" %%a in ('..\windows\service_start.bat "!sql_service_name!"') do (
+	if "%%~a" NEQ "0" (
+		echo sql service "!sql_service_name!" start failed
+		goto :eof
+	)
+)
 pushd %parent%
 endlocal
