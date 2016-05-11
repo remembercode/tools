@@ -11,11 +11,19 @@ for /f "delims=" %%a in ('..\common\param\format_input.bat "%~1"') do (
 )
 for /f "delims=" %%a in ('..\windows\service_exist.bat "!service_name!"') do (
 	if "%%~a" NEQ "0" (
-		echo "%%a"
+		echo "%%~a"
 		goto :eof
 	)
 )
-net stop %service_name%>nul 2>nul
-echo "!errorlevel!"
+for /f "tokens=4 skip=3 delims= " %%a in ('sc query !service_name!') do (
+	REM echo %%a
+	if "%%a" EQU "RUNNING" (
+		echo "0"
+	) else (
+		echo "1"
+	)
+	goto jump
+)
+:jump
 pushd %parent%
 endlocal

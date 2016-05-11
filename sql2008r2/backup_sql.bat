@@ -45,21 +45,44 @@ for /f "delims=" %%a in ('..\common\param\format_input_dir.bat "%~4"') do (
 )
 
 for /f "delims=" %%a in ('..\windows\service_exist.bat "!sql_service_name!"') do (
-	if "%%a" NEQ "0" (
+	if "%%~a" NEQ "0" (
 		echo sql service "!sql_service_name!" do not exist
 		goto :eof
 	)
 )
 
-for /f "delims=" %%a in ('..\windows\service_stop.bat "!sql_service_name!"') do (
+set /a service_running=1
+for /f "delims=" %%a in ('..\windows\service_running.bat "!sql_service_name!"') do (
 	REM echo "%%~a"
 	if "%%~a" NEQ "0" (
-		echo sql service "!sql_service_name!" stop failed
-		goto :eof
+		set /a service_running=0
 	)
 )
 
-goto :eof
+if "!service_running!" EQU "1" (
+	for /f "delims=" %%a in ('..\windows\service_stop.bat "!sql_service_name!"') do (
+		if "%%~a" NEQ "0" (
+			echo sql service "!sql_service_name!" stop failed
+			goto :eof
+		) else (
+			echo sql service "!sql_service_name!" stop succeed
+		)
+	)
+) else (
+	echo sql service "!sql_service_name!" is not running, no need to stop
+)
+
+if not exist "%src_path%\%sql_name%.mdf" (
+	echo "%src_path%\%sql_name%.mdf" do not exist
+	goto :eof
+)
+
+if not exist "%src_path%\%sql_name%_log.ldf" (
+	echo "%src_path%\%sql_name%_log.ldf" do not exist
+	goto :eof
+)
+
+if not exist "%dst_path%" mkdir "%dst_path%"
 
 copy "%src_path%\%sql_name%.mdf" "%dst_path%\%sql_name%.mdf" /y
 copy "%src_path%\%sql_name%_log.ldf" "%dst_path%\%sql_name%_log.ldf" /y
@@ -68,6 +91,8 @@ for /f "delims=" %%a in ('..\windows\service_start.bat "!sql_service_name!"') do
 	if "%%~a" NEQ "0" (
 		echo sql service "!sql_service_name!" start failed
 		goto :eof
+	) else (
+		echo sql service "!sql_service_name!" start succeed
 	)
 )
 pushd %parent%
