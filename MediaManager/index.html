@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Media Manager</title>
+	<script type="text/javascript" src="js/jquery-1.12.3.js"></script>
+	<script type="text/javascript" src="js/letters.js"></script>
+	<script type="text/javascript" src="js/dir.js"></script>
+</head>
+<body>
+<script>
+var fs = require("fs");
+var os = require("os");
+
+$(document).ready(function(){
+	var os_type=os.type();
+	if(os_type=="Windows_NT") {
+		$.letters(function(partations){
+			$.each(partations,function(index,partation){
+				$.dir(partation,function(files){
+					$.each(files,function(index,file){
+						
+						fs.lstat(partation+"\\"+file, function(err, stats){
+							console.log(partation+"\\"+file);
+							if(err){
+								console.log(err);
+								<!-- throw err; -->
+							}else{
+								stats.isFile();
+								console.log(stats);
+								console.log(stats.isFile());
+								console.log(stats.isDirectory());
+							}
+						})
+
+					})
+				})
+			})
+		});
+	};
+});
+
+
+ 
+/**
+ *  output:
+ *  Caption
+ *  C:
+ *  D:
+ *  E:
+ *  F:
+ *  G:
+ **/
+</script>
+</body>
+</html>
